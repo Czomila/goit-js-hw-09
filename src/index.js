@@ -1,22 +1,12 @@
 import './css/styles.css';
-
+import fetchCountries from './fetchCountries';
+import debounce from 'lodash.debounce';
 const DEBOUNCE_DELAY = 300;
 
-const fetchBtn = document.querySelector(".btn");
 
-fetchUsersBtn.addEventListener("click", () => {
-  fetchCountries("po")
+const inputListener = document.getElementById("search-box");
+const delayFetch = debounce(() => { if (inputListener.value.trim()) {fetchCountries(inputListener.value)}}, DEBOUNCE_DELAY) ;
+inputListener.addEventListener("input", () => {
+  delayFetch();
 });
-
-function fetchCountries(name){
-  return fetch(`https://restcountries.com/v3.1/name/${name}`).then(
-    (response) => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      console.log(response.json);
-      return response.json();
-    }
-  );
-}
 
